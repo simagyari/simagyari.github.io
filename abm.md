@@ -1,6 +1,5 @@
 ---
 title: Agent-Based Model
-author: [simagyari](https://github.com/simagyari)
 ---
 
 
