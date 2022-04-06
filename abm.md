@@ -8,4 +8,6 @@ The purpose of this page is to showcase and describe the agent-based model for A
 
 ## Testing
 
+For details of the testing carried out on the project, please see [Testing](abm_testing.html)
+
 ## Profiling
