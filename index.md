@@ -4,7 +4,7 @@ title: simagyari
 
 
 Welcome!  
-My name is [Sándor István Magyari](www.linkedin.com/in/si-magyari), and this is my GitHub Page, where you can find information on my past and ongoing projects in computer programming.
+My name is [Sándor István Magyari](https://www.linkedin.com/in/si-magyari), and this is my GitHub Page, where you can find information on my past and ongoing projects in computer programming.
 
 Please find the links to my projects in the list below:
 
