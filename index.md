@@ -8,4 +8,4 @@ My name is [Sándor István Magyari](https://www.linkedin.com/in/si-magyari), an
 
 Please find the links to my projects in the list below:
 
- - [Agent-based Model](https://simagyari.github.io/abm.html) -> Assignment 1, GEOG5990M: Programming for Geographical Information Analysis: Core Skills
+ - [Agent-based Model](abm/abm.html) -> Assignment 1, GEOG5990M: Programming for Geographical Information Analysis: Core Skills
