@@ -7,7 +7,7 @@ The purpose of this page is to showcase and describe the agent-based model for A
 
 ## Description
 
-This model simulates the movements and interactions of sheep with their environment and each other. For technical, installation, and running information please see the [README](https://github.com/simagyari/GEOG5990M/blob/main/README.md) file and the [documentation](https://github.com/simagyari/GEOG5990M/blob/main/docs) of the [project reposity](https://github.com/simagyari/GEOG5990M).
+This model simulates the movements and interactions of sheep with their environment and each other. For technical, installation, and running information please see the [README](https://github.com/simagyari/GEOG5990M/blob/main/README.md) file and the [documentation](https://github.com/simagyari/GEOG5990M/blob/main/docs) of the [project reposity](https://github.com/simagyari/GEOG5990M). The latter one must be downloaded to serve from localhost.
 
 The model features sheep grazing an environment by decreasing values of the raster file they are moving on.
 
