@@ -14,3 +14,5 @@ The purpose of this page is to showcase and describe the agent-based model for A
 For details of the testing carried out on the project, please see [Testing](abm_testing.html)
 
 ## Profiling
+
+For details of the runtime and memory profiling carried out on the project, please see [Profiling](abm_profiling.html).
