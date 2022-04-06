@@ -7,7 +7,7 @@ The purpose of this page is to showcase and describe the agent-based model for A
 
 ## Description
 
-This model simulates the movements and interactions of sheep with their environment and each other. For technical, installation, and running information please see the [README](https://github.com/simagyari/GEOG5990M/blob/readme/README.md) file of the [project reposity](https://github.com/simagyari/GEOG5990M), and the [documentation](docs/_build/index.html).
+This model simulates the movements and interactions of sheep with their environment and each other. For technical, installation, and running information please see the [README](https://github.com/simagyari/GEOG5990M/blob/main/README.md) file and the [documentation](https://github.com/simagyari/GEOG5990M/blob/main/docs) of the [project reposity](https://github.com/simagyari/GEOG5990M).
 
 The model features sheep grazing an environment by decreasing values of the raster file they are moving on.
 
@@ -21,7 +21,7 @@ The model can be initiated from the command line or terminal, and manifests a po
 ```
 python model.py --agents [] --iterations [] --neighbourhood []
 ```
-where the square brackets represent the integers required as the parameters. If no values are set, the defaults of 10, 100, and 20 are used. More information is available in the [README](https://github.com/simagyari/GEOG5990M/blob/readme/README.md).
+where the square brackets represent the integers required as the parameters. If no values are set, the defaults of 10, 100, and 20 are used. More information is available in the [README](https://github.com/simagyari/GEOG5990M/blob/main/README.md).
 
 ## Development and Issues
 
