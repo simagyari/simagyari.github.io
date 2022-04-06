@@ -17,7 +17,7 @@ Methods tested are:
 | set_y | changes the y coordinate |
 | move | randomly changes x and y coordinates |
 | eat | fills the storage of agents, decreases environment values |
-|__str__ | controls printed attributes of the agent |
+| str | controls printed attributes of the agent |
 | sick | makes agent storage zero if it exceeds 100 |
 | share_with_neighbours | shares half of storage with neighbours |
 | share_eater | moves received share to storage |
