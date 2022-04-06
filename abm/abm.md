@@ -7,6 +7,14 @@ The purpose of this page is to showcase and describe the agent-based model for A
 
 ## Description
 
+This model simulates the movements and interactions of sheep with their environment and each other. For technical, installation, and running information please see the [README](https://github.com/simagyari/GEOG5990M/blob/readme/README.md) file of the [project reposity](https://github.com/simagyari/GEOG5990M).
+
+The model features sheep grazing an environment by decreasing values of the raster file they are moving on. The number of agents is variable, with the starting coordinates of the first 100 sourced from the web. The other sheep coordinates are randomly generated. The iterations of the model are manually adjustable (see [Development and Issues](markdown-header-development-and-issues)), as well as a neighbourhood value to decide which other agents are counted as neighbours each turn. Sheep move, eat, and share food with each other, as well as be sick when their food storage exceeds 100 units. Once the model run has finished, output is registered in text files to make the different simulations comparable. The model can be initiated from the command line or terminal, and manifests a pop-up window where the run can be started. The number of agents, iterations, and the neighbourhood distance can be set in the command line when initialising the model with the following code:  
+```
+python model.py --agents [] --iterations [] --neighbourhood []
+```
+where the square brackets represent the integers required as the parameters. If no values are set, the defaults of 10, 100, and 20 are used. More information is available in the [README](https://github.com/simagyari/GEOG5990M/blob/readme/README.md).
+
 ## Development and Issues
 
 The development of the model is following the guidelines of the practical material from Assignment 1, GEOG5990M at the University of Leeds. The code was developed between 24/01/2022 and 06/04/2022 using [Python](https://www.python.org/) 3.9.7 through the [Anaconda](https://www.anaconda.com/) distribution. The editor used was [Microsoft Visual Studio Code](https://code.visualstudio.com/) version 1.66.0 instead of the recommended [Spyder](https://www.spyder-ide.org/), since the code was made for command-line execution. VSCode provided a better environment for building the model outside of the iPython kernel, which requires different usage of [matplotlib](https://matplotlib.org/) backends and visualisation.
