@@ -9,7 +9,15 @@ The purpose of this page is to showcase and describe the agent-based model for A
 
 This model simulates the movements and interactions of sheep with their environment and each other. For technical, installation, and running information please see the [README](https://github.com/simagyari/GEOG5990M/blob/readme/README.md) file of the [project reposity](https://github.com/simagyari/GEOG5990M).
 
-The model features sheep grazing an environment by decreasing values of the raster file they are moving on. The number of agents is variable, with the starting coordinates of the first 100 sourced from the web. The other sheep coordinates are randomly generated. The iterations of the model are manually adjustable (see [Development and Issues](markdown-header-development-and-issues)), as well as a neighbourhood value to decide which other agents are counted as neighbours each turn. Sheep move, eat, and share food with each other, as well as be sick when their food storage exceeds 100 units. Once the model run has finished, output is registered in text files to make the different simulations comparable. The model can be initiated from the command line or terminal, and manifests a pop-up window where the run can be started. The number of agents, iterations, and the neighbourhood distance can be set in the command line when initialising the model with the following code:  
+The model features sheep grazing an environment by decreasing values of the raster file they are moving on.
+
+![Image of the environment raster used in the model](images/environment.png "Environment raster used in the model")
+
+The number of agents is variable, with the starting coordinates of the first 100 sourced from the web. The other sheep coordinates are randomly generated. The iterations of the model are manually adjustable (see [Development and Issues](markdown-header-development-and-issues)), as well as a neighbourhood value to decide which other agents are counted as neighbours each turn. Sheep move, eat, and share food with each other, as well as be sick when their food storage exceeds 100 units. Once the model run has finished, output is registered in text files to make the different simulations comparable.
+
+![Image of the agents and environment after a finished simulation run](images/animation.png "Agents and environment after a finished simulation")
+
+The model can be initiated from the command line or terminal, and manifests a pop-up window where the run can be started. The number of agents, iterations, and the neighbourhood distance can be set in the command line when initialising the model with the following code:  
 ```
 python model.py --agents [] --iterations [] --neighbourhood []
 ```
