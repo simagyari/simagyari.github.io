@@ -1,5 +1,5 @@
 ---
-title: Tutorial 2 - PyQGIS Processing Algorithms
+title: Tutorial 2 - PyQGIS processing algorithms
 ---
 
 
