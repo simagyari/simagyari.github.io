@@ -15,13 +15,22 @@ This is the first tutorial, talking about accessing Python functionality and bas
 - [Opening the PyQGIS Console](#opening-the-pyqgis-console)
 - [iface](#iface)
 - [Project instance](#project-instance)
-  * [Save project](#save-project)
+	* [Save project](#save-project)
 - [Load layers](#load-layers)
-  * [Load vector layer](#load-vector-layer)
-  * [Load raster layer](#load-raster-layer)
+	* [Load vector layer](#load-vector-layer)
+	* [Load raster layer](#load-raster-layer)
 - [Working with layers](#working-with-layers)
-  * [Edit vector layer](#edit-vector-layer)
-  * [Explore raster statistics](#explore-raster-statistics)
+	* [Edit vector layer](#edit-vector-layer)
+		* [Set active layer](#set-active-layer)
+		* [Get features](#get-features)
+		* [Editing attributes](#editing-attributes)
+		* [Vector geometry](#vector-geometry)
+		* [Field calculation](#field-calculation)
+		* [Write vector file](#write-vector-file)
+	* [Explore raster statistics](#explore-raster-statistics)
+		* [Extent and resolution](#extent-and-resolution)
+		* [Descriptive statistics](#descriptive-statistics)
+		* [Write raster file](#write-raster-file)
 
 
 # Opening the PyQGIS Console
@@ -103,4 +112,22 @@ When it comes to working with layers, most of the options we have comes with vec
 
 ## Edit vector layer
 
+### Set active layer
+
+### Get features
+
+### Editing attributes
+
+### Vector geometry
+
+### Field calculation
+
+### Write vector file
+
 ## Explore raster statistics
+
+### Extent and resolution
+
+### Descriptive statistics
+
+### Write raster file
