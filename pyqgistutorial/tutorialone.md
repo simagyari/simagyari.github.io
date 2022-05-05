@@ -15,12 +15,12 @@ This is the first tutorial, talking about accessing Python functionality and bas
 - [Opening the PyQGIS Console](#opening-the-pyqgis-console)
 - [iface](#iface)
 - [Project instance](#project-instance)
-  * [Load and save project](#load-and-save-project)
-- [Vector layers](#vector-layers)
+  * [Save project](#save-project)
+- [Load layers](#load-layers)
   * [Load vector layer](#load-vector-layer)
-  * [Edit vector layer](#edit-vector-layer)
-- [Raster layers](#raster-layers)
   * [Load raster layer](#load-raster-layer)
+- [Working with layers](#working-with-layers)
+  * [Edit vector layer](#edit-vector-layer)
   * [Explore raster statistics](#explore-raster-statistics)
 
 
@@ -61,16 +61,46 @@ QgsProject.instance().setCrs('EPSG:27700')
 ```
 *EPSG:27700 is the code of the British National Grid. EPSG:4326 is that of the WGS84 ellipsoid*
 
-## Load and save project
+## Save project
+You can save your project with the command `QgsProject.instance().write(<PATH>)` from the Console if it has not been saved yet or you want to do another save to a different place. If you would like to save an already placed project (like ours now), simply use `QgsProject.instance().write()`.
 
-# Vector layers
+*You can code this command at the end of your file in the editor to save all outputs surely.*
+
+# Load layers
+*Vector layers, like shapefiles, geodatabase feature classes in ArcGIS, or Geopackage feature layers in QGIS, are containing geometry information of vector layers. Raster layers, on the contrary, are images, or pixel-based representations, with possibly different bands, each of them having a value at every pixel location. This section will tell you about loading them one by one or multiple instances at once.*
 
 ## Load vector layer
+Vector files can be loaded into QGIS with the command `iface.addVectorLayer(<PATH>, <LAYERNAME>, <LIBRARY>)` with the filepath of the layer. Library means the driver of the file. For example, to load a shapefile, one would usually use the driver 'ogr'.
 
-## Edit vector layer
+**TASK: From your files in the Data folder, import the 'wharfe_catchment' and 'wharfe_rivers_os' shapefiles.**
 
-# Raster layers
+*Hint: use the datadir variable you have created earlier to access the shapefiles' folder.*
 
 ## Load raster layer
+Raster files can be loaded into QGIS with the command `iface.addRasterLayer(<PATH>, <LAYERNAME>)`. As all raster layers are handled by the driver 'gdal', no library specification is necessary.
+
+**TASK: load the 'wharfe_dem.tif' raster file from the Data folder.**
+
+## Load multiple layers at once
+To load multiple layers at once, you have to define them at first as layers. You can do this with the `var = QgsVectorLayer(<PATH>, <LAYERNAME>, <LIBRARY>)` command on a vector and the `var = QgsRasterLayer(<PATH>, <LAYERNAME>)` command on a raster. This way, you assign them to an unloaded layer variable. Once you have your defined layer variables, you can use the next command:
+```
+QgsProject.instance().addMapLayers([LIST-OF-LAYERS])
+```
+*You can use this method to add one layer to the map too, just remove the 's' from the end of addMapLayers.*
+
+The fact that you have imported your layers does not mean you can access them from the Console straight away! You have to assign them to variables each, or, which is the preferred method, list them in a dictionary.
+```
+layers = {}  # defining the dictionary
+for layer in iface.mapCanvas().layers():
+	layers[layer.name()] = layer  # each layer is accessible by name
+```
+
+*Dictionaries are unordered key-value pairs, one of the most useful data structures in Python.*
+
+
+# Working with layers
+When it comes to working with layers, most of the options we have comes with vector representation as those files have attribute tables, we can calculate and manipulate lots of things with them. On rasters, these options do not exist, modifying their values manually is not too common either. So in this section, we are taking a look at editing vector and exploring raster layers.
+
+## Edit vector layer
 
 ## Explore raster statistics
