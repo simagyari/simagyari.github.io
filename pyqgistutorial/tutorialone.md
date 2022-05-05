@@ -14,7 +14,7 @@ This is the first tutorial, talking about accessing Python functionality and bas
 - [Introduction](#introduction)
 - [Opening the PyQGIS Console](#opening-the-pyqgis-console)
 - [iface](#iface)
-- [QgsProject.instance()](#qgsproject.instance())
+- [Project instance](#project-instance)
   * [Load and save project](#load-and-save-project)
 - [Vector layers](#vector-layers)
   * [Load vector layer](#load-vector-layer)
@@ -44,7 +44,7 @@ The `iface` package manages the QGIS interface, containing many useful features.
 
 **TASK: type `help(iface)` into the Console to obtain the documentation of iface.**
 
-# QgsProject.instance()
+# Project instance
 `QgsProject.instance()` is the way to refer to the current project file. You can manipulate it with different methods of this object, such as `load()` or `write()`.
 
 **TASK: read the folder of the project and add your data folder name to create your data directory variable.**
@@ -54,7 +54,7 @@ print(datadir)
 ```
 *The above code reads the containing directory of the project file, then appends /Data to it.*
 
-**TASK: get the projection of your project map, then set it to British National Grid**
+**TASK: get the projection of your project map, then set it to British National Grid.**
 ```
 print(QgsProject.instance().crs())
 QgsProject.instance().setCrs('EPSG:27700')
