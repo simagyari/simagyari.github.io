@@ -11,16 +11,16 @@ To complete these tutorials, a basic understanding of Python, its data structure
 This is the first tutorial, talking about accessing Python functionality and basic layer manipulation inside the QGIS Python Console.
 
 # Table of Contents
-1. [Introduction](#markdown-header-introduction)
-2. [Opening the PyQGIS Console](#markdown-header-opening-the-pyqgis-console)
-3. [iface](#markdown-header-iface)
-   3.1. [Load and save project](#markdown-header-load-and-save-project)
-4. [Vector layers](#markdown-header-vector-layers)
-  4.1. [Load vector layer](#markdown-header-load-vector-layer)
-  4.2. [Edit vector layer](#markdown-header-edit-vector-layer)
-5. [Raster layers](#markdown-header-raster-layers)
-  5.1. [Load raster layer](#markdown-header-load-raster-layer)
-  5.2. [Explore raster statistics](#markdown-header-explore-raster-statistics)
+1. [Introduction](#introduction)
+2. [Opening the PyQGIS Console](#opening-the-pyqgis-console)
+3. [iface](#iface)
+3.1. [Load and save project](#load-and-save-project)
+4. [Vector layers](#vector-layers)
+4.1. [Load vector layer](#load-vector-layer)
+4.2. [Edit vector layer](#edit-vector-layer)
+5. [Raster layers](#raster-layers)
+5.1. [Load raster layer](#load-raster-layer)
+5.2. [Explore raster statistics](#explore-raster-statistics)
 
 
 # Opening the PyQGIS Console
