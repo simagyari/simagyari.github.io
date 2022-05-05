@@ -1,5 +1,5 @@
 ---
-title: Tutorial 1 - PyQGIS: The Beginnings
+title: Tutorial 1 - PyQGIS basics
 ---
 
 
