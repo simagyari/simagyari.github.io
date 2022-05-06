@@ -38,6 +38,8 @@ This is the first tutorial, talking about accessing Python functionality and bas
 
 In your project file (.qgz) navigate to the `Plugins > Python Console` option, which pops up the Python Console on the screen. Inside the Python Console, click the `Show Editor` button to show the editor.
 
+![Image of the Toolbar route to the Console](images/t1_console.png "Open the Console from the Toolbar")
+
 *In the Console, you can run Python commands, while in the Editor, you can create .py files to save those commands or a combination of them. It works like a generic text editor and terminal combination you can find in any IDE. You can pop up the Console using the keyboard shortcut `Ctrl + Alt + P` too.*
 
 When you open the Console and Editor, there is a block of code automatically run:
@@ -51,6 +53,8 @@ This accesses the basic functionality of Python in QGIS. You will always need th
 **TASK: in the Editor, create a new .py file in the folder of your QGIS project. Name it Tutorial_1.py.**
 
 The file will open in the Editor. The Editor's toolbar has options on running the complete code, or running the selected lines. We will use the latter frequently, as previous commands do not need reiterating to do another one in our case. When you have selected the lines you want to run, use your right mouse button and click `Run Selected Lines` for the lines to get copied into the Console. If they do not run automatically, which usually happens with multiple lines chosen, go to the Console and hit `ENTER` to run them.
+
+![Image of the Console and the Editor](images/t1_consoleeditor.png "The Console and the Editor")
 
 # iface
 The `iface` package manages the QGIS interface, containing many useful features.
