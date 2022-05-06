@@ -56,6 +56,10 @@ The file will open in the Editor. The Editor's toolbar has options on running th
 
 ![Image of the Console and the Editor](images/t1_consoleeditor.png "The Console and the Editor")
 
+**TASK: write all your code in the Editor to have them saved if you close your project.**
+
+*Console inputs and outputs are lost once you close the QGIS project.*
+
 # iface
 The `iface` package manages the QGIS interface, containing many useful features.
 
@@ -277,6 +281,12 @@ QgsRasterFileWriter(pathname_ras).writeRaster(pipe, wharfe_dem.width(), wharfe_d
 
 This is the end of the first tutorial. If you reached this point, well done! Now you know most of the basics about using the QGIS Python Console and Editor to manipulate layers.
 
-&rarr; [Tutorial 2](pyqgistutorial/tutorialtwo.html)
+**TASK: save your editor file with the Save button.**
 
-&larr; [Main page](pyqgistutorial/index.html)
+**TASK: save your QGIS project file in the end of your work.**
+
+
+
+&rarr; [Tutorial 2](tutorialtwo.html)
+
+&larr; [Main page](index.html)
