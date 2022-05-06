@@ -33,9 +33,42 @@ To turn our Tutorial 2 code into a Script, we first have to initialise one. From
 
 ![Image of Toolbox with script template opening](images/t3_toolbox.png "New Script from Template")
 
+When looking at the window of the new script, you will see something like this:
+
+![Image of the new script window](images/t3_newscript.png "New script template")
+
+In the next section, we will walk through all the small, miscellaneous-looking parts of this code.
+
 # Setting basic properties
+This section is about setting the smaller methods and the main class up to display the correct name and script group of the script, as well as to display a proper helper string.
 
 ## Renaming your script
+There are multiple steps to rename your script.
+
+**TASK: rewrite the name of your main class from ExampleProcessingAlgorithm to something more meaningful (in this example, I will use HydroBasinProcessingAlgorithm).**
+
+**TASK: write a docstring to your class.**
+
+*Hint: something like this maybe:
+    """
+    This algorithm takes a DEM and a catchment shapefile,
+    then computes the filled DEM, flow direction, catchment area,
+    stream network, watersheds, river nodes, then selects the hydrologically
+    correct catchment from the basins based on the original shapefile,
+    to subsequently clip all output layers to the extent of it.
+    """
+
+**TASK: go on to the `createInstance()` method and change the return name to your algorithm name.**
+
+**TASK: in the name() method, change the return value to the lowercase name of the name you want your algorithm to be called from the Toolbox. In this case, I will use hydrobasincreator.**
+
+**TASK: in the displayName() method, change the return value inside self.tr() to the actual name you want to display. In this case, I will use HydroBasinCreator.**
+
+*With the tr() method, you do not need to do anything, it works fine with any name.*
+
+In the end of these changes, which you should do in all scripts you might write in the future, the script should look something like this:
+
+![Image of changed script naming](images/t3_namechange.png "Changed naming")
 
 ## Set subgroup of your string
 
