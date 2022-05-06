@@ -116,8 +116,23 @@ Once we have the flow accumulation raster, we are able to create the channels an
 *Hint: if you do not manage to obtain the appropriate layers, search for the SAGA tool documentation on the internet.*
 
 # Finding the hydrologically correct Wharfe basin
+Until now, we just ran different processing scripts to obtain the layers we need, but here we will have to use a bit of bespoke code. The task is to automatically choose, from the previous tool's basins vector layer, the basin of the Wharfe. Manually, this is quite easy, but QGIS does not know how to do it the same way. This means that we have to devise a method that yields us the correct feature of the basins layer.
 
 ## Intersect hydrological basins with catchment shape
+Firstly, we have to get the intersection of the basins layer and the original catchment shapefile. This will yield us the basins that are partially covered by the catchment shapefile as it does not have the exact same dimensions in most cases as the one created from the DEM. This means that we are likely to encounter with one large and several smaller features in the intersection result. To run the code, we are using the Intersection tool from the native library:
+```
+parameters = {
+	'INPUT': channel_basin['BASINS'],  # cutting out from this layer
+	'OVERLAY': layers['wharfe_catchment'],  # with this layer
+	'INPUT_FIELDS':[],  # all fields to be transferred
+	'OVERLAY_FIELDS':[],  # all fields to be transferred
+	'OVERLAY_FIELDS_PREFIX':'',  # no prefix needed for the overlay's fields in the output
+	'OUTPUT':'TEMPORARY_OUTPUT'}
+basin_intersect = processing.run("native:intersection", parameters)
+```
+**TASK: observe the results of the intersection. Visually, how do you find the size distribution of features?**
+
+![Image of Intersection output](images/t2_intersection.png)
 
 ## Calculate area of intersected subbasins
 
