@@ -108,7 +108,7 @@ Once we have the flow accumulation raster, we are able to create the channels an
 
 **TASK: run the 'saga:channelnetworkanddrainagebasins' tool in the Console and assign it to the "channel_basin" variable.**
 
-**TASK: from the resulting layers, add the BASIN, BASINS, SEGMENTS, NODES to the map.**
+**TASK: from the resulting layers, add the BASIN, BASINS, SEGMENTS, NODES to the map. Are the rivers alike the ones from the wharfe_rivers_os?**
 
 ![Image of Channel Network and Drainage Basins result](images/t2_channelbasin.png "Channel Network and Drainage Basins results")
 
@@ -188,7 +188,7 @@ To clip the layers, we have to distinguish between them. For vector layers, you 
 
 We can observe the type() of a layer to decide if they are vector or raster. Every layer has a .type() method which returns 0 for vector, 1 for raster layers.
 
-**TASK: iterating over each element of the dictionary, construct an if statement that recognises, and clips vector layers, sets their name, then outputs them to the map. It should do the same with rasters.**
+**TASK: iterating over each element of the dictionary, construct an if statement that recognises, and clips vector layers, sets their name, then outputs them to the map. It should do the same with rasters. Be careful to set all the layers you want to clip visible!**
 
 ![Image of the clipped outputs](images/t2_clipped.png "Outputs clipped with the Wharfe basin")
 
@@ -233,6 +233,10 @@ for item in layers.items():
         ras = processing.run("gdal:cliprasterbymasklayer", parameters)
         QgsProject.instance().addMapLayer(QgsRasterLayer(ras['OUTPUT'], item[0] + '_clip'))
 ```
+
+**TASK: save your Tutorial2.py file in the Editor. You can save the layers to file or remove them, you will only need the original DEM and the original catchment for the next tutorial.**
+
+**TASK: save your QGIS project with the method learned in the first tutorial.**
 
 &rarr; [Tutorial 3](tutorialthree.html)
 
