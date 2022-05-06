@@ -38,7 +38,7 @@ This is the first tutorial, talking about accessing Python functionality and bas
 
 In your project file (.qgz) navigate to the `Plugins > Python Console` option, which pops up the Python Console on the screen. Inside the Python Console, click the `Show Editor` button to show the editor.
 
-*In the Console, you can run Python commands, while in the Editor, you can create .py files to save those commands or a combination of them. It works like a generic text editor and terminal combination you can find in any IDE.*
+*In the Console, you can run Python commands, while in the Editor, you can create .py files to save those commands or a combination of them. It works like a generic text editor and terminal combination you can find in any IDE. You can pop up the Console using the keyboard shortcut `Ctrl + Alt + P` too.*
 
 When you open the Console and Editor, there is a block of code automatically run:
 
@@ -47,6 +47,10 @@ from qgis.core import *
 import qgis.utils
 ```
 This accesses the basic functionality of Python in QGIS. You will always need this, and it will always go ahead. Additionally, you can import and install other libraries like in general Python.
+
+**TASK: in the Editor, create a new .py file in the folder of your QGIS project. Name it Tutorial_1.py.**
+
+The file will open in the Editor. The Editor's toolbar has options on running the complete code, or running the selected lines. We will use the latter frequently, as previous commands do not need reiterating to do another one in our case. When you have selected the lines you want to run, use your right mouse button and click `Run Selected Lines` for the lines to get copied into the Console. If they do not run automatically, which usually happens with multiple lines chosen, go to the Console and hit `ENTER` to run them.
 
 # iface
 The `iface` package manages the QGIS interface, containing many useful features.
@@ -72,6 +76,10 @@ QgsProject.instance().setCrs('EPSG:27700')
 
 ## Save project
 You can save your project with the command `QgsProject.instance().write(<PATH>)` from the Console if it has not been saved yet or you want to do another save to a different place. If you would like to save an already placed project (like ours now), simply use `QgsProject.instance().write()`.
+
+**TASK: save your project with the above code.**
+
+Notice, that the Python Editor file has not been saved. You have to use its own save button to do that.
 
 *You can code this command at the end of your file in the editor to save all outputs surely.*
 
@@ -117,6 +125,9 @@ To edit a vector layer, you have to select it, which, in Console terms, usually 
 You can get the active layer of your project using `iface.activeLayer()`, which returns to you the layer object that is active (underlined in the table of contents) currently. If you wish to change the active layer, you can use the `iface.setActiveLayer(<LAYERNAME>)` with layername being the `layers[<LAYERKEY>]` in our case for the most precision.
 
 ### Get features
+The `<LAYER>.getFeatures()` command retrieves an iterable of all the features (attribute table rows) from the vector object. The iterable can be used to modify, print, retrieve, and calculate different features and values.
+
+*You can obtain one feature too with the command `getFeature(<FEATURENUMBER>)` where the number tells the row number of the feature from top to bottom, starting with 0.*
 
 ### Editing attributes
 
