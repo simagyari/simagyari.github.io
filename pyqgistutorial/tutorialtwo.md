@@ -105,6 +105,16 @@ flowacc_log = processing.run('gdal:rastercalculator', params)
 # Channel Network and Drainage Basins
 Once we have the flow accumulation raster, we are able to create the channels and drainage basins/catchments. For this, we use the Channel Network and Drainage Basins tool.
 
+**TASK: find the parameters you need for the calculation by running the tool from the GUI and looking it up in the History.**
+
+**TASK: run the 'saga:channelnetworkanddrainagebasins' tool in the Console and assign it to the "channel_basin" variable.**
+
+**TASK: from the resulting layers, add the BASIN, BASINS, SEGMENTS, NODES to the map.**
+
+![Image of Channel Network and Drainage Basins result](images/t2_channelbasin.png)
+
+*Hint: if you do not manage to obtain the appropriate layers, search for the SAGA tool documentation on the internet.*
+
 # Finding the hydrologically correct Wharfe basin
 
 ## Intersect hydrological basins with catchment shape
