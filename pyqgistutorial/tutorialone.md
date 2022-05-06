@@ -105,14 +105,16 @@ for layer in iface.mapCanvas().layers():
 ```
 
 *Dictionaries are unordered key-value pairs, one of the most useful data structures in Python.*
-
+*The mapCanvas refers to the visible map of the QGIS GUI.*
 
 # Working with layers
 When it comes to working with layers, most of the options we have comes with vector representation as those files have attribute tables, we can calculate and manipulate lots of things with them. On rasters, these options do not exist, modifying their values manually is not too common either. So in this section, we are taking a look at editing vector and exploring raster layers.
 
 ## Edit vector layer
+To edit a vector layer, you have to select it, which, in Console terms, usually means activation, although it is not necessary to do so, if you have your layers dictionary, where you can access the chosen layer by its name.
 
 ### Set active layer
+You can get the active layer of your project using `iface.activeLayer()`, which returns to you the layer object that is active (underlined in the table of contents) currently. If you wish to change the active layer, you can use the `iface.setActiveLayer(<LAYERNAME>)` with layername being the `layers[<LAYERKEY>]` in our case for the most precision.
 
 ### Get features
 
