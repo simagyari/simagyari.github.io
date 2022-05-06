@@ -22,8 +22,7 @@ This is the second tutorial, talking about processing algorithms and their usage
 - [Finding the hydrologically correct Wharfe basin](#finding-the-hydrologically-correct-wharfe-basin)
 	* [Intersect hydrological basins with catchment shape](#intersect-hydrological-basins-with-catchment-shape)
 	* [Calculate area of intersected subbasins](#calculate-area-of-intersected-subbasins)
-	* [Obtain ID of the largest subbasin](#obtain-id-of-the-largest-subbasin)
-	* [Create layer from the hydrologically correct Wharfe basin](#create-layer-from-the-hydrologically-correct-wharfe-basin)
+	* [Obtain the largest subbasin](#obtain-the-largest-subbasin)
 	* [Clip all layers with the hydrologically correct Wharfe basin](#clip-all-layers-with-the-hydrologically-correct-wharfe-basin)
 - [Last steps](#last-steps)
 
@@ -44,7 +43,7 @@ Now with everything reset to the previous state, we can start working on the hyd
 # Running processing algorithms
 To run processing algorithms in the PyQGIS Console, you have to start with the `processing.run(<COMMAND>, <PARAMETERS>)` command. This takes the command you want to run as a script, and the parameters as a disctionary. The easiest way to obtain the right parameters is to run the tool from the GUI and then look it up in the History. History is available from the processing toolbox, clicking on the clock icon at the top.
 
-![Image of the history object](images/t2_history.png)
+![Image of the history object](images/t2_history.png "Processing history")
 
 This method yields us all the information we need to run the scripts. If additional information is required, the SAGA framework has a useful webpage.
 
@@ -77,7 +76,7 @@ This returns a dictionary with the keys "FILLED", "FDIR", "WHSED". From this, we
 
 This algorithm removed the sinks from our DEM and created a flow direction raster.
 
-![Image of Flow Direction raster](images/t2_fdir.png)
+![Image of Flow Direction raster](images/t2_fdir.png "Flow Direction raster")
 
 # Catchment Area
 The next step is calculating the Catchment Area (or Flow Accumulation in ArcGIS and some QGIS versions). This needs the filled DEM as the "ELEVATION"  key, a "METHOD" and a "FLOW", which is the output to the same temporary output as the previous ones. The method is an integer, in this case 0, which means the D8 method, where water can flow from a cell to the eight neighbouring ones.
@@ -90,7 +89,7 @@ flow_acc = processing.run('saga:catchmentarea', parameters)
 ```
 **TASK: add the resulting "FLOW" layer to the map.**
 
-![Image of Catchment Area raster](images/t2_flow.png)
+![Image of Catchment Area raster](images/t2_flow.png "Catchment Area raster")
 
 *OPTIONAL!*
 *For the human eye, this does not tell much, as the difference between numbers is too large for a detailed view. For this reason, it might be useful to calculate the 10-based logarithm of the Flow raster. This can be done with the following code:*
@@ -100,7 +99,7 @@ flowacc_log = processing.run('gdal:rastercalculator', params)
 ```
 *Adding this layer to the map, you can see much more understandable results for the human eye.
 
-![Image of the logarithm of the Catchment Area raster](images/t2_logflow.png)
+![Image of the logarithm of the Catchment Area raster](images/t2_logflow.png "Logarithm of Catchment Area")
 
 # Channel Network and Drainage Basins
 Once we have the flow accumulation raster, we are able to create the channels and drainage basins/catchments. For this, we use the Channel Network and Drainage Basins tool.
@@ -111,7 +110,7 @@ Once we have the flow accumulation raster, we are able to create the channels an
 
 **TASK: from the resulting layers, add the BASIN, BASINS, SEGMENTS, NODES to the map.**
 
-![Image of Channel Network and Drainage Basins result](images/t2_channelbasin.png)
+![Image of Channel Network and Drainage Basins result](images/t2_channelbasin.png "Channel Network and Drainage Basins results")
 
 *Hint: if you do not manage to obtain the appropriate layers, search for the SAGA tool documentation on the internet.*
 
@@ -132,7 +131,7 @@ basin_intersect = processing.run("native:intersection", parameters)
 ```
 **TASK: observe the results of the intersection. Visually, how do you find the size distribution of features?**
 
-![Image of Intersection output](images/t2_intersection.png)
+![Image of Intersection output](images/t2_intersection.png "Intersection result basins")
 
 ## Calculate area of intersected subbasins
 Now that we have our intersection result, the next step is to choose the largest one of them, since that is the most likely to be the hydrologically correct Wharfe basin. To do this, we have to add and calculate the "area" field to the attribute table. To do this, we can use a calculation expression just as in the first tutorial.
@@ -152,12 +151,91 @@ with edit(intersection):
 ```
 **TASK: open the attribute table of the intersection result and look at the layer areas. Are there any outliers?**
 
-![Image of Intersection attribute table](images/t2_intersectionarea.png)
+![Image of Intersection attribute table](images/t2_intersectionarea.png "Attribute table of the Intersection layer")
 
-## Obtain ID of the largest subbasin
+## Obtain the largest subbasin
+With the areas calculated, we have to obtain the ID of the largest one. To do this, we have to get the largest area first.
+```
+max_area = intersection.maximumValue(intersection.fields().indexFromName('area'))
+```
+*The indexFromName() method looks for the numeric index of a field with the set name. The maximumValue() method returns the maximum value of a field.*
 
-## Create layer from the hydrologically correct Wharfe basin
+With the maximum area known, we can use the native library's Extract by Attribute tool to obtain the needed feature.
+```
+parameters = {
+	'INPUT': intersection,
+	'FIELD':'area',
+	'OPERATOR':0,
+	'VALUE':max_area,
+	'OUTPUT':'TEMPORARY_OUTPUT'
+	}
+wharfe_hydro = processing.run("native:extractbyattribute", parameters)
+```
+This yields us a new layer with only one feature, the hydrologically correct Wharfe basin. We can now use this to clip all the layers and create the needed output for any modelling task.
+
+**TASK: rename the output layer to "wharfe_hydro" and add it to the map.**
+
+*Hint: on mapLayer objects, you can use the setName() method to rename them.*
+
+![Image of hydrologically correct Wharfe basin](images/t2_wharfe.png "Hydrologically correct Wharfe basin")
 
 ## Clip all layers with the hydrologically correct Wharfe basin
+Clipping the layers with the hydrologically correct Wharfe basin yields us the minimum needed size of information. Also, it does not lead our future models astray with unnecessary data.
+
+To clip the layers, we have to distinguish between them. For vector layers, you can use the native Clip tool, and for rasters, you can use gdal's Clip by Mask Layer tool. But how do we distinguish between the two types?
+
+**TASK: update your layers dictionary.**
+
+We can observe the type() of a layer to decide if they are vector or raster. Every layer has a .type() method which returns 0 for vector, 1 for raster layers.
+
+**TASK: iterating over each element of the dictionary, construct an if statement that recognises, and clips vector layers, sets their name, then outputs them to the map. It should do the same with rasters.**
+
+![Image of the clipped outputs](images/t2_clipped.png "Outputs clipped with the Wharfe basin")
 
 # Last steps
+With the clipped layers now ready, we have reached the end of the second tutorial phase. Great work so far, now there is only one part left, where we will turn our code into a GUI-based processing script.
+
+Oh, and if you are struggling with the last task, here is my code to solve it:
+```
+for item in layers.items():
+    if item[1].type() == 0:  # chack type
+        print('vector')
+        # Adapted from https://opensourceoptions.com/blog/pyqgis-clip-vector-layers/
+		parameters = {
+			'INPUT': item[1],
+			'OVERLAY': wharfe_hydro,
+			'OUTPUT': 'TEMPORARY_OUTPUT'
+			}
+        vec = processing.run('native:clip', parameters)
+        vec['OUTPUT'].setName(item[0] + '_clip')
+        QgsProject.instance().addMapLayer(vec['OUTPUT'])
+    elif item[1].type() == 1:  # check type
+        print('raster')
+        # Adapted from https://docs.qgis.org/3.22/en/docs/user_manual/processing_algs/gdal/rasterextraction.html
+		parameters = {
+			'INPUT':item[1],
+			'MASK':wharfe_hydro,
+			'SOURCE_CRS':None,
+			'TARGET_CRS':None,
+			'NODATA':'NaN',
+			'ALPHA_BAND':False,
+			'CROP_TO_CUTLINE':True,
+			'KEEP_RESOLUTION':False,
+			'SET_RESOLUTION':False,
+			'X_RESOLUTION':None,
+			'Y_RESOLUTION':None,
+			'MULTITHREADING':False,
+			'OPTIONS':'',
+			'DATA_TYPE':0,
+			'EXTRA':'',
+			'OUTPUT':'TEMPORARY_OUTPUT'
+			}
+        ras = processing.run("gdal:cliprasterbymasklayer", parameters)
+        QgsProject.instance().addMapLayer(QgsRasterLayer(ras['OUTPUT'], item[0] + '_clip'))
+```
+
+&rarr; [Tutorial 3](tutorialthree.html)
+
+&larr; [Tutorial 1](tutorialone.html)
+
+&uarr; [Main page](index.html)
