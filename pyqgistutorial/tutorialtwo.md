@@ -80,8 +80,30 @@ This algorithm removed the sinks from our DEM and created a flow direction raste
 ![Image of Flow Direction raster](images/t2_fdir.png)
 
 # Catchment Area
+The next step is calculating the Catchment Area (or Flow Accumulation in ArcGIS and some QGIS versions). This needs the filled DEM as the "ELEVATION"  key, a "METHOD" and a "FLOW", which is the output to the same temporary output as the previous ones. The method is an integer, in this case 0, which means the D8 method, where water can flow from a cell to the eight neighbouring ones.
+
+**TASK: create the parameters dictionary for the Catchment Area tool.**
+
+After the parameters dict, run the tool with the following code:
+```
+flow_acc = processing.run('saga:catchmentarea', parameters)
+```
+**TASK: add the resulting "FLOW" layer to the map.**
+
+![Image of Catchment Area raster](images/t2_flow.png)
+
+*OPTIONAL!*
+*For the human eye, this does not tell much, as the difference between numbers is too large for a detailed view. For this reason, it might be useful to calculate the 10-based logarithm of the Flow raster. This can be done with the following code:*
+```
+params = {'INPUT_A': flow_acc['FLOW'], 'BAND_A': 1, 'FORMULA': 'log(A)', 'OUTPUT': 'TEMPORARY_OUTPUT'}
+flowacc_log = processing.run('gdal:rastercalculator', params)
+```
+*Adding this layer to the map, you can see much more understandable results for the human eye.
+
+![Image of the logarithm of the Catchment Area raster](images/t2_logflow.png)
 
 # Channel Network and Drainage Basins
+Once we have the flow accumulation raster, we are able to create the channels and drainage basins/catchments. For this, we use the Channel Network and Drainage Basins tool.
 
 # Finding the hydrologically correct Wharfe basin
 
