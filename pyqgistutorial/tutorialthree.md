@@ -28,6 +28,9 @@ This is the third, and final, tutorial, talking about turning Console-based proc
 	* [Running and debugging the script](#running-and-debugging-the-script)
 - [Last steps](#last-steps)
 
+# First steps
+To begin the programming, we have to decide what the algorithm should do. This instance, the processing script will take a raw DEM and a catchment shapefile, then return a hydrologically correct DEM of the catchment, with flow direction, flow accumulation raster ouputs, and river nodes, segments, as well as the shape of the hydrologically correct basin itself as vector outputs.
+
 # Create Script from Template
 To turn our Tutorial 2 code into a Script, we first have to initialise one.
 
@@ -94,10 +97,73 @@ At the end of this stage, your group part should look like this:
 ![Image of grouping methods](images/t3_group.png "Changed grouping")
 
 ## Write short helper string
+The last one of these smaller methods is the `shortHelpString()` method. This returns a short helping string for the algorithm, which will be displayed in the GUI.
+
+**TASK: write a short helping string for the algorithm.**
+
+*Hint: I have written the following: Creates the hydrologically correct version of a catchment and returns catchment area, channel, junction layers.*
 
 # initAlgorithm
+This is the first large part of the code. Here we set the input and output parameters.
+
+**TASK: remove the contents of the `initAlgorithm()` method.**
 
 ## Input parameters
+The input parameters you add here, will be the ones the GUI asks from the user for the code to run. As mentioned in the beginning, the script will take two input layers:
+
+1. Raw Digital Elevation Model
+2. Catchment shapefile
+
+Besides these, three numerical variables will be needed for the processing of the layers:
+
+1. MINSLOPE for the Fill Sinks (wang & liu) algorithm
+2. METHOD for the Catchment Area algorithm
+3. THRESHOLD for the Channel Network and Drainage Basins algorithm
+
+Overall, we need a rasterlayer (QgsProcessingParameterRasterLayer), a vector layer (QgsProcessingParameterVectorLayer) and three numbers (QgsProcessingParameterNumber) for our inputs.
+
+**TASK: add the above three classes to the `from qgis.core import` part at the top of the file.**
+
+With the necessary options imported, we can start writing the input parameters. The first one looks like this:
+```
+        # We add the input raster source. It can be any kind of raster layer
+        self.addParameter(  # adds a parameter
+            QgsProcessingParameterRasterLayer(  # raster layer
+                self.DEM,  # referred to as the DEM constant
+                self.tr('Input Digital Elevation Model'),  # text above the GUI input box
+                [QgsProcessing.TypeRaster]  # type of accepted layers (only raster here)
+            )
+        )
+```
+**TASK: add the constant DEM = "DEM"  right after the constants INPUT and OUTPUT at the top of the file.**
+
+The above framework works for every input parameter, only has to be adjusted for the types and names. Constants must be written for them, too.
+
+**TASK: remove the constants INPUT and OUTPUT as you will not need them.**
+
+**TASK: create the vector layer (constant is CATCHMENT) parameter by yourself.**
+
+With the layers out of the way, it's time for the numbers now.
+
+The first one looks like this:
+```
+        # Add MINSLOPE number for the Fill Sinks (wang & liu) algorithm
+        self.addParameter(  # add parameter
+            QgsProcessingParameterNumber(  # number
+                self.MINSLOPE,  # constant for it
+                self.tr('Minimum slope for filling sinks'),  # text above the input box
+                type=QgsProcessingParameterNumber.Double,  # type of number
+                minValue=0,  # minimum value
+                defaultValue=0.01  # default value
+            )
+        )
+```
+
+**TASK: create the other two number parameters (constants are CATCHMENTAREAMETHOD with min and default values at 0 and max value at 5, and CHANNELTHRESHOLD with min value 1 and default value 6).**
+
+After all these have been done, your code should look like this:
+
+![Image of the input parameters](images/t3_inputparam.png "Input parameters")
 
 ## Output parameters
 
