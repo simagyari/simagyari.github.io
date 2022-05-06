@@ -40,7 +40,7 @@ In your project file (.qgz) navigate to the `Plugins > Python Console` option, w
 
 ![Image of the Toolbar route to the Console](images/t1_console.png "Open the Console from the Toolbar")
 
-*In the Console, you can run Python commands, while in the Editor, you can create .py files to save those commands or a combination of them. It works like a generic text editor and terminal combination you can find in any IDE. You can pop up the Console using the keyboard shortcut `Ctrl + Alt + P` too.*
+*In the Console, you can run Python commands, while in the Editor, you can create .py files to save those commands or a combination of them. It works like a generic text editor and terminal combination you can find in any IDE. You can pop up the Console using the keyboard shortcut `Ctrl+Alt+P` too.*
 
 When you open the Console and Editor, there is a block of code automatically run:
 
