@@ -51,6 +51,33 @@ This method yields us all the information we need to run the scripts. If additio
 *If you would like to examine more the options you have regarding processing algorithms, just run them from the GUI and look at them afterwards in the history.*
 
 # Fill Sinks and Flow Direction
+The first step is filling the sinks and creating a flow direction raster. These steps are separate in ArcGIS, but in QGIS, there is a tool called Fill Sinks (wang & liu), which does it in one step. To run the script, we must create the parameters first.
+```
+parameters = {
+	'ELEV': wharfe_dem,
+	'MINSLOPE': 0.01,
+	'FILLED': 'TEMPORARY_OUTPUT',
+	'FDIR': 'TEMPORARY_OUTPUT',
+	'WSHED': 'TEMPORARY_OUTPUT'
+	}
+```
+With the parameters now set, we can run the tool. We assign it to a variable to preserve the outputs.
+```
+fill_wangliu = processing.run('saga:fillsinkswangliu', parameters)
+```
+
+This returns a dictionary with the keys "FILLED", "FDIR", "WHSED". From this, we will only need the first two, the watersheds we will create later.
+
+*In the processing script, the algorithm provider is stated, then a colon, then the tool.*
+*There is also a Fill Sinks tool, which only creates a filled DEM.*
+
+**TASK: add the FILLED and FDIR layers to the map.**
+
+*Hint: you can use the QgsProject.instance().addMapLayers() command and the QgsRasterLayer() command to do this task.*
+
+This algorithm removed the sinks from our DEM and created a flow direction raster.
+
+![Image of Flow Direction raster](images/t2_fdir.png)
 
 # Catchment Area
 
