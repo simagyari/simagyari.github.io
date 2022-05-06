@@ -15,9 +15,9 @@ This is the second tutorial, talking about processing algorithms and their usage
 - [Introduction](#introduction)
 - [The task](#the-task)
 - [First steps](#first-steps)
+- [Running processing algorithms](#running-processing-algorithms)
 - [Fill Sinks and Flow Direction](#fill-sinks-and-flow-direction)
 - [Catchment Area](#catchment-area)
-- [Channel Network](#channel-network)
 - [Channel Network and Drainage Basins](#channel-network-and-drainage-basins)
 - [Finding the hydrologically correct Wharfe basin](#finding-the-hydrologically-correct-wharfe-basin)
 	* [Intersect hydrological basins with catchment shape](#intersect-hydrological-basins-with-catchment-shape)
@@ -30,7 +30,7 @@ This is the second tutorial, talking about processing algorithms and their usage
 # The task
 This tutorial has been made for hydrology students, so it will showcase the necessary knowledge of PyQGIS through a water-related project. Hydraulic modelling is an extremely important part of modern hydrologists' work, as it is used in everything from modelling nutrient pollution to creating flood risk representations. However, the modelling software needs quality outputs, as otherwise the "garbage in, garbage out" principle takes effect. For this reason, inputs must be pre-processed and hydrologically corrected to create the most favourable conditions for model running.
 
-This tutorial uses the appropriate processing algorithms and bespoke code to take in a catchment shapefile and a Digital Elevation Model, then produce the hydrologically corrected DEM and other layers, such as river segments, nodes, catchment area, etc.
+This tutorial uses the appropriate processing algorithms and bespoke code to take in a catchment shapefile and a Digital Elevation Model, then produce the hydrologically corrected DEM and other layers, such as river segments, nodes, catchment area, etc. Our river of choice for this task is the Wharfe, which runs to the north of Leeds, with many documented flood events and important water quality issues as parts of it are designated bathing locations.
 
 # First steps
 We are going to take up the work from where we left off in the last tutorial. Open up your project with the Wharfe's raster and vector layers in it, open the Console and the Editor, which should retain your Tutorial1.py file.
@@ -39,13 +39,20 @@ We are going to take up the work from where we left off in the last tutorial. Op
 
 **TASK: get your layers into the layers dictionary the way we learned last time.**
 
-Now with everything reset to the previous state, we can start working on the hydrological workflow.
+Now with everything reset to the previous state, we can start working on the hydrological workflow. To achieve our goals, we will use the processing algorithms of the SAGA algorithm provider which comes natively with QGIS. We will also use some of the native processing algorithms.
+
+# Running processing algorithms
+To run processing algorithms in the PyQGIS Console, you have to start with the `processing.run(<COMMAND>, <PARAMETERS>)` command. This takes the command you want to run as a script, and the parameters as a disctionary. The easiest way to obtain the right parameters is to run the tool from the GUI and then look it up in the History. History is available from the processing toolbox, clicking on the clock icon at the top.
+
+![Image of the history object](images/t2_history.png)
+
+This method yields us all the information we need to run the scripts. If additional information is required, the SAGA framework has a useful webpage.
+
+*If you would like to examine more the options you have regarding processing algorithms, just run them from the GUI and look at them afterwards in the history.*
 
 # Fill Sinks and Flow Direction
 
 # Catchment Area
-
-# Channel Network
 
 # Channel Network and Drainage Basins
 
