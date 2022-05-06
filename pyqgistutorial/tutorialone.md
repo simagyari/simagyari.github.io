@@ -97,10 +97,14 @@ Vector files can be loaded into QGIS with the command `iface.addVectorLayer(<PAT
 
 *Hint: use the datadir variable you have created earlier to access the shapefiles' folder.*
 
+![Image of loading a vector layer](images/t1_loadvector.png "Load vector layers")
+
 ## Load raster layer
 Raster files can be loaded into QGIS with the command `iface.addRasterLayer(<PATH>, <LAYERNAME>)`. As all raster layers are handled by the driver 'gdal', no library specification is necessary.
 
 **TASK: load the 'wharfe_dem.tif' raster file from the Data folder.**
+
+![Image of loading a raster layer](images/t1_loadraster.png "Load raster layer")
 
 ## Load multiple layers at once
 To load multiple layers at once, you have to define them at first as layers. You can do this with the `var = QgsVectorLayer(<PATH>, <LAYERNAME>, <LIBRARY>)` command on a vector and the `var = QgsRasterLayer(<PATH>, <LAYERNAME>)` command on a raster. This way, you assign them to an unloaded layer variable. Once you have your defined layer variables, you can use the next command:
