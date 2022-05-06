@@ -29,7 +29,11 @@ This is the third, and final, tutorial, talking about turning Console-based proc
 - [Last steps](#last-steps)
 
 # Create Script from Template
-To turn our Tutorial 2 code into a Script, we first have to initialise one. From the Toolbox, open a Scripts icon, then click on `New Script from Template`. This will give you a file with a lot of code, not all of which you will need. We will walk through it (mostly) from top down and change, add, or remove items to make it work for our case.
+To turn our Tutorial 2 code into a Script, we first have to initialise one.
+
+**TASK: From the Toolbox, open a Scripts icon, then click on `New Script from Template`.**
+
+This will give you a file with a lot of code, not all of which you will need. We will walk through it (mostly) from top down and change, add, or remove items to make it work for our case.
 
 ![Image of Toolbox with script template opening](images/t3_toolbox.png "New Script from Template")
 
@@ -60,17 +64,34 @@ There are multiple steps to rename your script.
 
 **TASK: go on to the `createInstance()` method and change the return name to your algorithm name.**
 
-**TASK: in the name() method, change the return value to the lowercase name of the name you want your algorithm to be called from the Toolbox. In this case, I will use hydrobasincreator.**
+**TASK: in the `name()` method, change the return value to the lowercase name of the name you want your algorithm to be called from the Toolbox. In this case, I will use hydrobasincreator.**
 
-**TASK: in the displayName() method, change the return value inside self.tr() to the actual name you want to display. In this case, I will use HydroBasinCreator.**
+**TASK: in the `displayName()` method, change the return value inside `self.tr()` to the actual name you want to display. In this case, I will use HydroBasinCreator.**
 
-*With the tr() method, you do not need to do anything, it works fine with any name.*
+*With the `tr()` method, you do not need to do anything, it works fine with any name.*
 
 In the end of these changes, which you should do in all scripts you might write in the future, the script should look something like this:
 
 ![Image of changed script naming](images/t3_namechange.png "Changed naming")
 
+Now that you have changed the name of your script, it is time to save it.
+
+**TASK: save your script to the default location, something like this: `C:\Users\username\AppData\Roaming\QGIS\QGIS3\profiles\default\processing\scripts`.**
+
 ## Set subgroup of your string
+Subgrouping your scripts is important to organise them. It does not affect their subfolders when saving, only their representation in the Toolbox.
+
+**TASK: at the groups method, rewrite the return self.tr value to a subgroup name that makes sense to you. For the sake of simplicity, I will use scripts this time.**
+
+**TASK: at the groupId method, rewrite the return value to the same value you chose in the previous task.**
+
+This way, the toolbox will show "scripts" as a subgroup when you open your script.
+
+![Image of the scripts subgroup](images/t3_subgroup.png "scripts subgroup")
+
+At the end of this stage, your group part should look like this:
+
+![Image of grouping methods](images/t3_group.png "Changed grouping")
 
 ## Write short helper string
 
