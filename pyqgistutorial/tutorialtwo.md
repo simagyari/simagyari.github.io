@@ -25,6 +25,7 @@ This is the second tutorial, talking about processing algorithms and their usage
 	* [Obtain ID of the largest subbasin](#obtain-id-of-the-largest-subbasin)
 	* [Create layer from the hydrologically correct Wharfe basin](#create-layer-from-the-hydrologically-correct-wharfe-basin)
 	* [Clip all layers with the hydrologically correct Wharfe basin](#clip-all-layers-with-the-hydrologically-correct-wharfe-basin)
+- [Last steps](#last-steps)
 
 # The task
 This tutorial has been made for hydrology students, so it will showcase the necessary knowledge of PyQGIS through a water-related project. Hydraulic modelling is an extremely important part of modern hydrologists' work, as it is used in everything from modelling nutrient pollution to creating flood risk representations. However, the modelling software needs quality outputs, as otherwise the "garbage in, garbage out" principle takes effect. For this reason, inputs must be pre-processed and hydrologically corrected to create the most favourable conditions for model running.
@@ -59,3 +60,5 @@ Now with everything reset to the previous state, we can start working on the hyd
 ## Create layer from the hydrologically correct Wharfe basin
 
 ## Clip all layers with the hydrologically correct Wharfe basin
+
+# Last steps
