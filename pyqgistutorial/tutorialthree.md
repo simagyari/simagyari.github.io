@@ -29,6 +29,9 @@ This is the third, and final, tutorial, talking about turning Console-based proc
 - [Last steps](#last-steps)
 
 # Create Script from Template
+To turn our Tutorial 2 code into a Script, we first have to initialise one. From the Toolbox, open a Scripts icon, then click on `New Script from Template`. This will give you a file with a lot of code, not all of which you will need. We will walk through it (mostly) from top down and change, add, or remove items to make it work for our case.
+
+![Image of Toolbox with script template opening](images/t3_toolbox.png "New Script from Template")
 
 # Setting basic properties
 
