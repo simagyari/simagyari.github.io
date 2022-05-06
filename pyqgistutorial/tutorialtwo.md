@@ -135,6 +135,24 @@ basin_intersect = processing.run("native:intersection", parameters)
 ![Image of Intersection output](images/t2_intersection.png)
 
 ## Calculate area of intersected subbasins
+Now that we have our intersection result, the next step is to choose the largest one of them, since that is the most likely to be the hydrologically correct Wharfe basin. To do this, we have to add and calculate the "area" field to the attribute table. To do this, we can use a calculation expression just as in the first tutorial.
+```
+with edit(intersection):
+    intersection.addAttribute(QgsField('area', QVariant.Double))
+
+# Calculate area of the features
+areacalc = QgsExpression('$area')  # expression
+areacalcContext = QgsExpressionContext()  # context
+areacalcContext.appendScopes(QgsExpressionContextUtils.globalProjectLayerScopes(intersection))  # scope
+with edit(intersection):
+    for f in intersection.getFeatures():
+        areacalcContext.setFeature(f)
+        f['area'] = areacalc.evaluate(areacalcContext)
+        intersection.updateFeature(f)
+```
+**TASK: open the attribute table of the intersection result and look at the layer areas. Are there any outliers?**
+
+![Image of Intersection attribute table](images/t2_intersectionarea.png)
 
 ## Obtain ID of the largest subbasin
 
