@@ -331,12 +331,42 @@ For the next part, getting the maximum area, we have to turn our `INTERSECTAREA`
 
 After you have done all these tasks, this part of your processAlgorithm should look something like this:
 
-![Image of hydrobasin algos](images/t3_hydrobasin.png)
+![Image of hydrobasin algos](images/t3_hydrobasin.png "Choosing the hydrologically correct basin")
 
 ## Clipping outputs
+Clipping the outputs is exactly the same as in Tutorial 2 in concept, with two main changes.
+
+1. To check the type of the items, we have to have them as map layers, which means we have to use the `mapLayerFromString` method again. *Note: in the actual processing algorithm, you don't have to use the method, just the dictionary item is enough.*
+2. The results should go into the `results` dictionary, as that will be returned in the end by the whole script.
+
+**TASK: adapt the Tutorial 2 code to fill up the `results` dictionary with the clipped elements of the proc_res dictionary.**
+
+The code should look something like this:
+
+![Image of clipping method](images/t3_clipping.png "Clipping layers with the hydrologically correct basin")
+
+**TASK: below your if statement, return your `results` dictionary.**
 
 ## Logging to the main log window
+It is useful sometimes to track your errors with simple log messages. In this case, if one of your layers fails for some reason, we will make it seen in the main log window of QGIS, which you can open by clicking on the small speech bubble in the bottom right of the GUI. To be able to log messages, you have to import the `QgsMessageLog` module from the `qgis.core` at the top of the file.
+
+**TASK: in the if statement of the previous task, add an `else:` part which uses the `QgsMessageLog.logMessage()` function to write the name of the layer to the log window.**
+
+It should look something like this:
+
+![Image of else log](images/t3_log.png "Logging to the main log window")
+
+**TASK: save your script and your .qgz project.**
 
 ## Running the script from the GUI
+With all the above code done and saved, you are now capable of running your tool from the GUI. In the processing toolbox, among the scripts, you will find it. By double-clicking on it, you can open up the GUI tool.
+
+![Image of GUI](images/t3_gui.png "The Script GUI")
+
+When running it with the default parameters, the output should look like this:
+
+![Image of Script results](images/t3_results.png "Results of the script")
+
+*Note: the names of the layers are not set here, but here is a link to a stackExchange thread which sorts it: https://gis.stackexchange.com/a/384996*
 
 # Last steps
