@@ -160,27 +160,35 @@ max_area = intersection.maximumValue(intersection.fields().indexFromName('area')
 ```
 *The indexFromName() method looks for the numeric index of a field with the set name. The maximumValue() method returns the maximum value of a field.*
 
-With the maximum area known, we can use the native library's Extract by Attribute tool to obtain the needed feature.
+With the maximum area known, we can get the ID of that layer. We iterate over the features in the intersection and get the ID of the feature with matching area:
+```
+for feature in intersection.getFeatures():
+    if feature.attributes()[intersection.fields().indexFromName('area')] == max_area:
+        max_id = feature.attributes()[intersection.fields().indexFromName('ID')]
+```
+Once we have the appropriate ID, we can use the native Extract by Attribute algorithm to obtain our basin from the basins vector layer:
 ```
 parameters = {
-	'INPUT': intersection,
-	'FIELD':'area',
+	'INPUT': channel_basin['BASINS'],
+	'FIELD':'ID',
 	'OPERATOR':0,
-	'VALUE':max_area,
+	'VALUE':max_id,
 	'OUTPUT':'TEMPORARY_OUTPUT'
 	}
 wharfe_hydro = processing.run("native:extractbyattribute", parameters)
 ```
 This yields us a new layer with only one feature, the hydrologically correct Wharfe basin. We can now use this to clip all the layers and create the needed output for any modelling task.
 
-**TASK: rename the output layer to "wharfe_hydro" and add it to the map.**
+**TASK: add the output layer to the map, rename the output layer to "wharfe_hydro".**
 
-*Hint: on mapLayer objects, you can use the setName() method to rename them.*
+*Hint: on mapLayer objects, you can use the setName() method to rename them. You have to refresh your layers dict for it to appear in it.*
 
 ![Image of hydrologically correct Wharfe basin](images/t2_wharfe.png "Hydrologically correct Wharfe basin")
 
 ## Clip all layers with the hydrologically correct Wharfe basin
 Clipping the layers with the hydrologically correct Wharfe basin yields us the minimum needed size of information. Also, it does not lead our future models astray with unnecessary data.
+
+**TASK: assign your wharfe_hydro layer to the wharfe_hydro variable for clipping.**
 
 To clip the layers, we have to distinguish between them. For vector layers, you can use the native Clip tool, and for rasters, you can use gdal's Clip by Mask Layer tool. But how do we distinguish between the two types?
 
