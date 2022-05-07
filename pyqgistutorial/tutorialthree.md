@@ -210,8 +210,28 @@ After all these have been done, your output parameters (right under your input p
 ![Image of output parameters](images/t3_outputparam.png "Output parameters")
 
 # processAlgorithm
+The second larger part is the processAlgorithm method. This is where the actual processing takes place and this one returns our results too. We are now going to go through the important parts of it one by one, building up the whole method, and finishing our Processing Script.
+
+**TASK: remove the contents of the processAlgorithm method.**
+
+With an empty method now, free of distractions, we can start building our own processing toolset.
 
 ## Feedback
+Feedback is the way of letting the GUI user know what is happening progress-wise in the tool. This is a crucial step in the code.
+
+**TASK: at the top of the code, import `QgsProcessingMultistepFeedback` from the qgis.core module.**
+
+We can define a feedback variable with the following code:
+```
+feedback = QgsProcessingMultiStepFeedback(6, feedback)  # 6 step feedback
+```
+After each chunk of the code (e.g. a processing tool) has been written, you can input the following code to make the feedback move:
+```
+        feedback.setCurrentStep(1)  # first step done (at second step, write 2)
+        if feedback.isCanceled():  
+            return {}  # if the user cancels the run, return empty dict
+```
+*You can do this as many times as you want, just set the number of the feedback variable to the highest you got to at the end.*
 
 ## Result dictionaries
 
