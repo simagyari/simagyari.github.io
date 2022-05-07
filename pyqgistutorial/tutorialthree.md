@@ -23,9 +23,10 @@ This is the third, and final, tutorial, talking about turning Console-based proc
 	* [Feedback](#feedback)
 	* [Result dictionaries](#result-dictionaries)
 	* [Running processing algorithms inside a script](#running-processing-algorithms-inside-a-script)
-	* [Chaining processing algorithms](#chaining-processing-algorithms)
+	* [Getting the hydrologically correct basin](#getting-the-hydrologically-correct-basin)
+	* [Clipping outputs](#clipping-outputs)
 	* [Logging to the main log window](#logging-to-the-main-log-window)
-	* [Running and debugging the script](#running-and-debugging-the-script)
+	* [Running the script from the GUI](#running-the-script-from-the-gui)
 - [Last steps](#last-steps)
 
 # First steps
@@ -243,11 +244,60 @@ After this, the beginning of your processAlgorithm should look something like th
 ![Image of feedback and dicts](images/t3_feedbackdict.png)
 
 ## Running processing algorithms inside a script
+In this script, we are going to run three algorithms (Fill Sinks (wang & liu), Catchment Area, Channel Network and Drainage Basins), then implement the automatic basin choice and the clipping of the rasters using the Extract by Attribute, Clip, and Clip Raster by Mask Layer tools.
 
-## Chaining processing algorithms
+The way you run processing algorithms is almost the same inside the script as outside of it. There is a number of key differences, though.
+
+1. Getting input parameters: you can get them from the `parameters` dictionary that has been generated based on the initAlgorithm. The keys of the dictionary are the same as your constants.
+2. Storing outputs: the processing script should be assigned to a key of the `outputs` dictionary. If one of the processing outputs you want to send to the clipping at the end, assign it to the `proc_res` dictionary.
+3. Running the algorithm itself: inside the `processing.run()` part, after the name and the parameters, write `context=context, feedback=feedback, is_child_algorithm=True`. This sets the feedback and context, and specifies that the algorithm runs inside the processingAlgorithm method.
+
+The Fill Sinks (wang & liu) algorithm looks like this for example:
+```
+        # parameters dictionary
+	params = {
+            'ELEV': parameters['DEM'],
+            'MINSLOPE':parameters['MINSLOPE'],
+            'FDIR': QgsProcessing.TEMPORARY_OUTPUT,
+            'FILLED': QgsProcessing.TEMPORARY_OUTPUT,
+            'WSHED': QgsProcessing.TEMPORARY_OUTPUT
+        }
+        outputs['FILLSINKS'] = processing.run('saga:fillsinkswangliu', params, context=context, feedback=feedback, is_child_algorithm=True)
+	# From the outputs dictionary's FILLSINKS key, containing all the fill sinks output, get the two result layers to proc_res
+        proc_res['DEMFILL'] = outputs['FILLSINKS']['FILLED']  # get filled dem result
+        proc_res['FDIR'] = outputs['FILLSINKS']['FDIR']  # get fdir result
+	
+        # Set feedback for current step
+        feedback.setCurrentStep(1)  # fist step done
+        if feedback.isCanceled():  # if the user cancels the run, return empty dict
+            return {}
+```
+*Notice the two outputs to proc_res, those are going to be clipped and partake in the final results dict. Also, first step of the feedback triggered.*
+
+If you want to use the outputs of this calculation, you can access it from the outputs dictionary. For example, here are the parameters of the Catchment Area algorithm:
+```
+        params = {
+            'ELEVATION': outputs['FILLSINKS']['FILLED'],  # gets filled sink from outputs
+            'METHOD': parameters['CATCHMENTAREAMETHOD'],
+            'FLOW': QgsProcessing.TEMPORARY_OUTPUT #parameters['CATCHMENTAREA']
+        }
+```
+This way, you can effectively chain processing algorithms!
+
+**TASK: based on the above example, create the code for the Catchment Area and the Channel Network and Drainage Basins algorithms.**
+
+*Note: be careful to assign outputs to clip to the proc_res dictionary and set the incremental steps of feedback.*
+
+After this task, your processing code should look something like this:
+
+![Image of first three processing tools](images/t3_processing.png "The first three chained processing algorithm")
+
+## Getting the hydrologically correct basin
+
+## Clipping outputs
 
 ## Logging to the main log window
 
-## Running and debugging the script
+## Running the script from the GUI
 
 # Last steps
