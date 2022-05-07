@@ -370,3 +370,389 @@ When running it with the default parameters, the output should look like this:
 *Note: the names of the layers are not set here, but here is a link to a stackExchange thread which sorts it: https://gis.stackexchange.com/a/384996*
 
 # Last steps
+Congratulations, you have survived the PyQGIS tutorial! I hope it was of use to you and that it encourages you to look for solutions and improvements yourself in the future. Don't forget, the search engine is your best friend. Thank you for taking time to go through this resource!
+
+Finally, here is the full code for the processing script to help you see things as a whole:
+```
+# -*- coding: utf-8 -*-
+
+"""
+***************************************************************************
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+***************************************************************************
+"""
+
+from qgis.PyQt.QtCore import QCoreApplication
+# Import all the processing parameters you need here
+# FeatureSource removed from template
+from qgis.core import (QgsProcessing,
+                       QgsFeatureSink,
+                       QgsProcessingException,
+                       QgsProcessingAlgorithm,
+                       QgsProcessingMultiStepFeedback,  # added
+                       QgsProcessingParameterFeatureSink,
+                       QgsProcessingParameterRasterLayer,  # added
+                       QgsProcessingParameterVectorLayer,  # added
+                       QgsProcessingParameterNumber,  # added
+                       QgsProcessingParameterRasterDestination,  # added
+                       QgsProcessingParameterVectorDestination,  # added
+                       QgsMessageLog,  # added
+                       QgsProcessingUtils,  # added
+                       QgsFeatureRequest,  # added
+                       QgsExpression,  # added
+                       QgsVectorLayer,
+                       QgsRasterLayer
+                       )
+from qgis import processing
+
+# Rewrite the name of the class, add a description string
+class HydroBasinProcessingAlgorithm(QgsProcessingAlgorithm):
+    """
+    This algorithm takes a DEM and a catchment shapefile,
+    then computes the filled DEM, flow direction, catchment area,
+    stream network, watersheds, river nodes, then selects the hydrologically
+    correct catchment from the basins based on the original shapefile,
+    to subsequently clip all output layers to the extent of it.
+    """
+
+    # Constants used to refer to parameters and outputs. They will be
+    # used when calling the algorithm from another algorithm, or when
+    # calling from the QGIS console.
+
+    # Input constants
+    DEM = 'DEM'  # define dem input
+    CATCHMENT = 'CATCHMENT'  # define catchment shape input
+    MINSLOPE = 'MINSLOPE'  # define minslope for Fill Sinks (wang & liu)
+    CATCHMENTAREAMETHOD = 'CATCHMENTAREAMETHOD'  # define method for Catchment Area
+    CHANNELTHRESHOLD = 'CHANNELTHRESHOLD'  # define Strahler order threshold for channel network
+    # Output constants
+    DEMFILL = 'DEMFILL'  # define fill dem output
+    FDIR = 'FDIR'  # flow direction raster output
+    CATCHMENTAREA = 'CATCHMENTAREA'  # define catchment area output
+    # Channel Network and Drainage Basins output
+    CHANNELNODES = 'CHANNELNODES'  # channel node points
+    CHANNELSEGMENTS = 'CHANNELSEGMENTS'  # channel segment lines
+    # Hydrologically correct basin
+    HYDROBASIN = 'HYDROBASIN'
+    
+    def tr(self, string):  # nothing to do with this
+        """
+        Returns a translatable string with the self.tr() function.
+        """
+        return QCoreApplication.translate('Processing', string)
+
+    def createInstance(self):
+        return HydroBasinProcessingAlgorithm()  # use algorithm name here
+
+    def name(self):
+        """
+        Returns the algorithm name, used for identifying the algorithm. This
+        string should be fixed for the algorithm, and must not be localised.
+        The name should be unique within each provider. Names should contain
+        lowercase alphanumeric characters only and no spaces or other
+        formatting characters.
+        """
+        return 'hydrobasincreator'  # use algorithm name with no space and lower
+
+    def displayName(self):
+        """
+        Returns the translated algorithm name, which should be used for any
+        user-visible display of the algorithm name.
+        """
+        return self.tr('HydroBasinCreator')  # use real algorithmname here
+
+    def group(self):
+        """
+        Returns the name of the group this algorithm belongs to. This string
+        should be localised.
+        """
+        return self.tr('scripts')  # Creates a subgroup of the scripts folder
+
+    def groupId(self):
+        """
+        Returns the unique ID of the group this algorithm belongs to. This
+        string should be fixed for the algorithm, and must not be localised.
+        The group id should be unique within each provider. Group id should
+        contain lowercase alphanumeric characters only and no spaces or other
+        formatting characters.
+        """
+        return 'scripts'  # should be same as above one
+
+    def shortHelpString(self):
+        """
+        Returns a localised short helper string for the algorithm. This string
+        should provide a basic description about what the algorithm does and the
+        parameters and outputs associated with it..
+        """
+        return self.tr("Creates the hydrologically correct version of a catchment and returns catchment area, channel, junction layers.")
+
+    def initAlgorithm(self, config=None):
+        """
+        Here we define the inputs and output of the algorithm, along
+        with some other properties.
+        """
+        # We add the input raster source. It can be any kind of raster layer
+        self.addParameter(  # adds a parameter
+            QgsProcessingParameterRasterLayer(  # raster layer
+                self.DEM,  # referred to as the DEM constant
+                self.tr('Input Digital Elevation Model'),  # text when hovering the cursor above
+                [QgsProcessing.TypeRaster]  # type of accepted layers
+            )
+        )
+        
+        # We add the input vector layer with one feature. It must be a polygon.
+        self.addParameter(
+            QgsProcessingParameterVectorLayer(
+                self.CATCHMENT,
+                self.tr('Input catchment feature'),
+                [QgsProcessing.TypeVectorPolygon]
+            )
+        )
+        
+        # Add MINSLOPE number for the Fill Sinks (wang & liu) algorithm
+        self.addParameter(
+            QgsProcessingParameterNumber(
+                self.MINSLOPE,
+                self.tr('Minimum slope for filling sinks'),
+                type=QgsProcessingParameterNumber.Double,
+                minValue=0,
+                defaultValue=0.01
+            )
+        )
+        
+        # Add METHOD number for the Catchment Area algorithm
+        self.addParameter(
+            QgsProcessingParameterNumber(
+                self.CATCHMENTAREAMETHOD,
+                self.tr('Method for calculating catchment area'),
+                type=QgsProcessingParameterNumber.Integer,
+                minValue=0,
+                maxValue=5,
+                defaultValue=0
+            )
+        )
+        
+        # Add Strahler order threshold for Channel Network and Drainage Basins
+        self.addParameter(
+            QgsProcessingParameterNumber(
+                self.CHANNELTHRESHOLD,
+                self.tr('Threshold Strahler order for channel initialisation'),
+                type=QgsProcessingParameterNumber.Integer,
+                minValue=1,  # Starting Strahler order for a stream
+                defaultValue=6  # works well with the Wharfe, depends on others
+            )
+        )
+        
+        # Output parameters:
+        # Filled DEM output
+        self.addParameter(
+            QgsProcessingParameterRasterDestination(
+                self.DEMFILL,
+                self.tr('Filled Digital Elevation Model')
+            )
+        )
+        
+        # Flow Direction raster output
+        self.addParameter(
+            QgsProcessingParameterRasterDestination(
+                self.FDIR,
+                self.tr('Flow Direction Raster')
+            )
+        )
+        
+        # Catchment Area raster output
+        self.addParameter(
+            QgsProcessingParameterRasterDestination(
+                self.CATCHMENTAREA,
+                self.tr('Catchment Area Raster')
+            )
+        )
+        
+        # Channel segments vector output
+        self.addParameter(
+            QgsProcessingParameterVectorDestination(
+                self.CHANNELSEGMENTS,
+                self.tr('Channel Network Segments')
+            )
+        )
+        
+        # Channel nodes vector output
+        self.addParameter(
+            QgsProcessingParameterVectorDestination(
+                self.CHANNELNODES,
+                self.tr('Channel Network Nodes')
+            )
+        )
+        
+        self.addParameter(
+            QgsProcessingParameterVectorDestination(
+                self.HYDROBASIN,
+                self.tr('Hydrologically Correct Basin Shape')
+            )
+        )
+
+    def processAlgorithm(self, parameters, context, feedback):
+        """
+        Here is where the processing itself takes place.
+        """
+
+        feedback = QgsProcessingMultiStepFeedback(6, feedback)  # set feedback to user
+        results = {}  # results dict to return at the end
+        proc_res = {}  # results dict for processing algorithms
+        outputs = {}  # outputs dict for temporary output
+        
+        # Fill sinks (wang & liu)
+        # Generate parameters dictionary
+        # Same as in Tutorial 2 but input parameters are from the parameters dict
+        params = {
+            'ELEV': parameters['DEM'],
+            'MINSLOPE':parameters['MINSLOPE'],
+            'FDIR': QgsProcessing.TEMPORARY_OUTPUT,
+            'FILLED': QgsProcessing.TEMPORARY_OUTPUT,
+            'WSHED': QgsProcessing.TEMPORARY_OUTPUT
+        }
+        outputs['FILLSINKS'] = processing.run('saga:fillsinkswangliu', params, context=context, feedback=feedback, is_child_algorithm=True)
+        proc_res['DEMFILL'] = outputs['FILLSINKS']['FILLED']  # get filled dem result
+        proc_res['FDIR'] = outputs['FILLSINKS']['FDIR']  # get fdir result
+        
+        # Set feedback for current step
+        feedback.setCurrentStep(1)  # fist step done
+        if feedback.isCanceled():  # if the user cancels the run, return empty dict
+            return {}
+
+        # Catchment area
+        params = {
+            'ELEVATION': outputs['FILLSINKS']['FILLED'],
+            'METHOD': parameters['CATCHMENTAREAMETHOD'],
+            'FLOW': QgsProcessing.TEMPORARY_OUTPUT #parameters['CATCHMENTAREA']
+        }
+        outputs['CATCHMENTAREA'] = processing.run('saga:catchmentarea', params, context=context, feedback=feedback, is_child_algorithm=True)
+        proc_res['CATCHMENTAREA'] = outputs['CATCHMENTAREA']['FLOW']  # get catchmentarea result
+        
+        # Set feedback for next step
+        feedback.setCurrentStep(2)
+        if feedback.isCanceled():
+            return {}
+        
+        # Channel network and drainage basins
+        params = {
+            'DEM': outputs['FILLSINKS']['FILLED'],
+            'THRESHOLD': parameters['CHANNELTHRESHOLD'],
+            'BASIN': QgsProcessing.TEMPORARY_OUTPUT,  # raster
+            'BASINS': QgsProcessing.TEMPORARY_OUTPUT,  # vector
+            'CONNECTION': QgsProcessing.TEMPORARY_OUTPUT,
+            'DIRECTION': QgsProcessing.TEMPORARY_OUTPUT,
+            'NODES': QgsProcessing.TEMPORARY_OUTPUT, #parameters['CHANNELNODES'],
+            'ORDER': QgsProcessing.TEMPORARY_OUTPUT,
+            'SEGMENTS': QgsProcessing.TEMPORARY_OUTPUT #parameters['CHANNELSEGMENTS']
+        }
+        outputs['CHANNELNETWORK'] = processing.run('saga:channelnetworkanddrainagebasins', params, context=context, feedback=feedback, is_child_algorithm=True)
+        proc_res['CHANNELSEGMENTS'] = outputs['CHANNELNETWORK']['SEGMENTS']  # get river segments result
+        proc_res['CHANNELNODES'] = outputs['CHANNELNETWORK']['NODES']  # get river nodes result
+        
+        # Set feedback for next step
+        feedback.setCurrentStep(3)
+        if feedback.isCanceled():
+            return {}
+        
+        #### Get the hydrologically correct basin
+        
+        # Intersect the basins polygon file with the catchment shape
+        params = {
+            'INPUT': outputs['CHANNELNETWORK']['BASINS'],
+            'INPUT_FIELDS': None,
+            'OVERLAY': parameters['CATCHMENT'],
+            'OVERLAY_FIELDS': None,
+            'OVERLAY_FIELDS_PREFIX': '',
+            'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+        }
+        outputs['INTERSECT'] = processing.run('native:intersection', params, context=context, feedback=feedback, is_child_algorithm=True)
+        
+        # Set feedback for next step
+        feedback.setCurrentStep(4)
+        if feedback.isCanceled():
+            return {}
+        
+        # Add field to the intersection result and calculate its area
+        params = {
+            'FIELD_LENGTH': 50,  # how many numbers fit inside
+            'FIELD_NAME': 'area',  # name of new field
+            'FIELD_PRECISION': 3,  # number of decimals
+            'FIELD_TYPE': 0,  # filed type float
+            'FORMULA': '$area',  # calculation formula
+            'INPUT': outputs['INTERSECT']['OUTPUT'],
+            'NEW_FIELD': True,  # creates field by itself
+            'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+        }
+        outputs['INTERSECTAREA'] = processing.run('qgis:fieldcalculator', params, context=context, feedback=feedback, is_child_algorithm=True)
+        
+        # Set feedback for next step
+        feedback.setCurrentStep(5)
+        if feedback.isCanceled():
+            return {}
+        
+        # Search for the largest area in the field
+        # Create an object from the reference string returned by the algorithm
+        intersectarea_obj = QgsProcessingUtils.mapLayerFromString(outputs['INTERSECTAREA']['OUTPUT'], context)
+        MAX_AREA = intersectarea_obj.maximumValue(intersectarea_obj.fields().indexFromName('area'))
+        
+        # Get the feature ID of the feature with the maximum area
+        for feature in intersectarea_obj.getFeatures():
+            if feature.attributes()[intersectarea_obj.fields().indexFromName('area')] == MAX_AREA:
+                MAX_ID = feature.attributes()[intersectarea_obj.fields().indexFromName('ID')]
+        
+        # Extract by attribute from the basins vector layer by the max ID
+        params = {
+            'FIELD': 'ID',
+            'INPUT': outputs['CHANNELNETWORK']['BASINS'],
+            'OPERATOR': 0,
+            'VALUE': QgsExpression(str(MAX_ID)).evaluate(),
+            'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+        }
+        outputs['HYDROBASIN'] = processing.run('native:extractbyattribute', params, context=context, feedback=feedback, is_child_algorithm=True)
+        proc_res['HYDROBASIN'] = outputs['HYDROBASIN']['OUTPUT']
+
+        # Set feedback for next step
+        feedback.setCurrentStep(6)
+        if feedback.isCanceled():
+            return {}
+        
+        # Clip result layers with HYDROBASIN
+        for item in proc_res.items():
+            if QgsProcessingUtils.mapLayerFromString(item[1], context).type() == 0:  # if vector
+                params = {
+                    'INPUT': item[1],
+                    'OVERLAY': proc_res['HYDROBASIN'],
+                    'OUTPUT': parameters[item[0]]
+                }
+                results[item[0]] = processing.run('native:clip', params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+            elif QgsProcessingUtils.mapLayerFromString(item[1], context).type() == 1:  # if raster
+                params = {
+                    'INPUT': item[1],
+                    'MASK': proc_res['HYDROBASIN'],
+                    'SOURCE_CRS': None,
+                    'TARGET_CRS': None,
+                    'NODATA': 'NaN',
+                    'ALPHA_BAND': False,
+                    'CROP_TO_CUTLINE': True,
+                    'KEEP_RESOLUTION': False,
+                    'SET_RESOLUTION': False,
+                    'X_RESOLUTION': None,
+                    'Y_RESOLUTION': None,
+                    'MULTITHREADING': False,
+                    'OPTIONS': '',
+                    'DATA_TYPE': 0,
+                    'EXTRA': '',
+                    'OUTPUT': parameters[item[0]]
+                }
+                results[item[0]] = processing.run("gdal:cliprasterbymasklayer", params, context=context, feedback=feedback, is_child_algorithm=True)['OUTPUT']
+            else:
+                QgsMessageLog.logMessage(item[0] + 'failed')
+        # Return the final dictionary of the clipped results
+        return results
+```
