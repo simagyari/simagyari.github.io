@@ -293,6 +293,45 @@ After this task, your processing code should look something like this:
 ![Image of first three processing tools](images/t3_processing.png "The first three chained processing algorithm")
 
 ## Getting the hydrologically correct basin
+The code for this part is basically identical to the one we had in the previous tutorial.
+
+**TASK: based on the previous section, replicate the Intersection tool inside the script.**
+
+With the intersection output, we can use the Field Calculator again. However, this time it looks a bit different, as we are going to use it in the same format as other processing algorithms:
+```
+        # Add field to the intersection result and calculate its area
+        params = {
+            'FIELD_LENGTH': 50,  # how many numbers fit inside
+            'FIELD_NAME': 'area',  # name of new field
+            'FIELD_PRECISION': 3,  # number of decimals
+            'FIELD_TYPE': 0,  # filed type float
+            'FORMULA': '$area',  # calculation formula
+            'INPUT': outputs['INTERSECT']['OUTPUT'],  # from the intersection
+            'NEW_FIELD': True,  # creates field by itself
+            'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
+        }
+        outputs['INTERSECTAREA'] = processing.run('qgis:fieldcalculator', params, context=context, feedback=feedback, is_child_algorithm=True)
+        
+        # Set feedback for next step
+        feedback.setCurrentStep(5)
+        if feedback.isCanceled():
+            return {}
+```
+The above code shows that you do not have to set context and scope in this case, the script has its own and it will only return those elements we tell it to return.
+
+For the next part, getting the maximum area, we have to turn our `INTERSECTAREA` output into a map layer. This we will do with the `mapLayerFromString` command the following way:
+```
+        intersectarea_obj = QgsProcessingUtils.mapLayerFromString(outputs['INTERSECTAREA']['OUTPUT'], context)
+```
+*It needs the outputted location string and the context, which is the context of our script.*
+
+**TASK: using the code from the previous tutorial, get the maximum area value, and, based on that, the ID of the feature we are looking for.**
+
+**TASK: use the Extract by Attribute module with the MAX_ID variable to extract the appropriate basin from the basin vector output of the Channel Network and Drainage Basins tool.**
+
+After you have done all these tasks, this part of your processAlgorithm should look something like this:
+
+![Image of hydrobasin algos](images/t3_hydrobasin.png)
 
 ## Clipping outputs
 
