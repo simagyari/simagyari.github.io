@@ -372,6 +372,10 @@ When running it with the default parameters, the output should look like this:
 # Last steps
 Congratulations, you have survived the PyQGIS tutorial! I hope it was of use to you and that it encourages you to look for solutions and improvements yourself in the future. Don't forget, the search engine is your best friend. Thank you for taking time to go through this resource!
 
+&larr; [Tutorial 2](tutorialtwo.html)
+
+&rarr; [Main page](index.html)
+
 Finally, here is the full code for the processing script to help you see things as a whole:
 ```
 # -*- coding: utf-8 -*-
