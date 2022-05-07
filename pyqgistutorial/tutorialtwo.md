@@ -183,7 +183,7 @@ This yields us a new layer with only one feature, the hydrologically correct Wha
 
 *Hint: on mapLayer objects, you can use the setName() method to rename them. You have to refresh your layers dict for it to appear in it.*
 
-**wharfe pic here**
+![Image of hydrologically correct Wharfe basin](images/t2_wharfe.png "Hydrologically correct Wharfe basin")
 
 ## Clip all layers with the hydrologically correct Wharfe basin
 Clipping the layers with the hydrologically correct Wharfe basin yields us the minimum needed size of information. Also, it does not lead our future models astray with unnecessary data.
@@ -198,7 +198,7 @@ We can observe the type() of a layer to decide if they are vector or raster. Eve
 
 **TASK: iterating over each element of the dictionary, construct an if statement that recognises, and clips vector layers, sets their name, then outputs them to the map. It should do the same with rasters. Be careful to set all the layers you want to clip visible!**
 
-**clipped pic here**
+![Image of the clipped outputs](images/t2_clipped.png "Outputs clipped with the Wharfe basin")
 
 # Last steps
 With the clipped layers now ready, we have reached the end of the second tutorial phase. Great work so far, now there is only one part left, where we will turn our code into a GUI-based processing script.
