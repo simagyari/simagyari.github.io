@@ -139,6 +139,8 @@ With the necessary options imported, we can start writing the input parameters. 
 
 The above framework works for every input parameter, only has to be adjusted for the types and names. Constants must be written for them, too.
 
+*Actually, constants are not necessary, they are just a convenient way, especially at longer scripts, to modify the instances you use the name for a parameter without having to search or scroll down a lot.*
+
 **TASK: remove the constants INPUT and OUTPUT as you will not need them.**
 
 **TASK: create the vector layer (constant is CATCHMENT) parameter by yourself.**
@@ -166,6 +168,46 @@ After all these have been done, your code should look like this:
 ![Image of the input parameters](images/t3_inputparam.png "Input parameters")
 
 ## Output parameters
+The output parameters here are the ones that will be returned by the algorithm, and will have output location boxes in the GUI. The script will return six layers, namely three rasters:
+
+1. Filled Digital Elevation Model
+2. Flow Direction Raster
+3. Catchment Area Raster
+
+And three vectors:
+
+4. Channel Network Segments
+5. Channel Network Nodes
+6. Hydrologically Correct Basin Shape
+
+Thus, we will need two types of output parameters - raster destionations (`QgsProcessingParameterRasterDestination`) and vector destinations (`QgsProcessingParameterVectorDestination`).
+
+**TASK: add the above two parameter types to the imports.**
+
+In the following, I will show you a sample code for each through the first parameter of each group:
+```
+        self.addParameter(  # add parameter
+            QgsProcessingParameterRasterDestination(  # raster output
+                self.DEMFILL,  # constant DEMFILL = 'DEMFILL' as inside name
+                self.tr('Filled Digital Elevation Model')  # name in GUI above output bracket
+            )
+        )
+
+        self.addParameter(  # add parameter
+            QgsProcessingParameterVectorDestination(  # vector output
+                self.CHANNELSEGMENTS,  # CHANNELSEGMENT = 'CHANNELSEGMENT' constant
+                self.tr('Channel Network Segments')  # name in GUI above output bracket
+            )
+        )
+```
+
+*Notice haw there are no type constraints here, since it can only output the types it has been created for.*
+
+**TASK: based on the two code samples, create the parameters for the remaining two rasters (FDIR = 'FDIR' and CATCHMENTAREA = 'CATCHMENTAREA') and two vectors (CHANNELNODES = 'CHANNELNODES'  and HYDROBASIN = 'HYDROBASIN').**
+
+After all these have been done, your output parameters (right under your input parameters inside the initAlgorithm) should look something like this:
+
+![Image of output parameters](images/t3_outputparam.png "Output parameters")
 
 # processAlgorithm
 
