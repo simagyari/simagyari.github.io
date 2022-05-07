@@ -234,6 +234,13 @@ After each chunk of the code (e.g. a processing tool) has been written, you can 
 *You can do this as many times as you want, just set the number of the feedback variable to the highest you got to at the end.*
 
 ## Result dictionaries
+**TASK: Right under the feedback variable, create (for this instance) three dictionaries called `results`, `proc_res`, and `outputs`.**
+
+These ones will contain the final results of the script, the unclipped results of the processing algorithms, and all the outputs processing algorithms generate.
+
+After this, the beginning of your processAlgorithm should look something like this:
+
+![Image of feedback and dicts](images/t3_feedbackdict.png)
 
 ## Running processing algorithms inside a script
 
