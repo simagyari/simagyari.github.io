@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>sitelocation module &#8212; Industrial Site Locator 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to Industrial Site Locator’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-sitelocation">
+<span id="sitelocation-module"></span><h1>sitelocation module<a class="headerlink" href="#module-sitelocation" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">sitelocation.</span></span><span class="sig-name descname"><span class="pre">SiteLocator</span></span><a class="headerlink" href="#sitelocation.SiteLocator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tkinter.Tk</span></code></p>
+<p>Provide attributes and methods for creating a GUI-based site location app.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.rasters">
+<span class="sig-name descname"><span class="pre">rasters</span></span><a class="headerlink" href="#sitelocation.SiteLocator.rasters" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of input rasters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><a class="headerlink" href="#sitelocation.SiteLocator.labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of Scalebar names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.raster_weights">
+<span class="sig-name descname"><span class="pre">raster_weights</span></span><a class="headerlink" href="#sitelocation.SiteLocator.raster_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of weights for each raster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list, default [100, 100, 100]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.blue_cmap">
+<span class="sig-name descname"><span class="pre">blue_cmap</span></span><a class="headerlink" href="#sitelocation.SiteLocator.blue_cmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Colour map for plotting the upper 10% in blue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>matplotlib.colors.ListedColormap</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.plotcolour">
+<span class="sig-name descname"><span class="pre">plotcolour</span></span><a class="headerlink" href="#sitelocation.SiteLocator.plotcolour" title="Permalink to this definition">¶</a></dt>
+<dd><p>cmap variable for matplotlib imshow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str or matplotlib.colors.ListedColormap</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.current_raster">
+<span class="sig-name descname"><span class="pre">current_raster</span></span><a class="headerlink" href="#sitelocation.SiteLocator.current_raster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Currently plotted raster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.fig">
+<span class="sig-name descname"><span class="pre">fig</span></span><a class="headerlink" href="#sitelocation.SiteLocator.fig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plotting figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.ax">
+<span class="sig-name descname"><span class="pre">ax</span></span><a class="headerlink" href="#sitelocation.SiteLocator.ax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subplot of the figure, used for the actual plotting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>matplotlib.figure.Axes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.is_ax_mapped">
+<span class="sig-name descname"><span class="pre">is_ax_mapped</span></span><a class="headerlink" href="#sitelocation.SiteLocator.is_ax_mapped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Status of ax, True when map is displayed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool, default False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.cmap_creator">
+<span class="sig-name descname"><span class="pre">cmap_creator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">matplotlib.colors.ListedColormap</span></span></span><a class="headerlink" href="#sitelocation.SiteLocator.cmap_creator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a custom colormap from gray and Blues_r with the top 10% being blue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A colormap object with 256 values, the bottom 90% gray, the top 10% blue gradient colors.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>matplotlib.colors.ListedColormap</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sitelocation.SiteLocator.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Triggers the functions needed for creating, weighting, and showing the map.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.raster_overlayer">
+<span class="sig-name descname"><span class="pre">raster_overlayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rasters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#sitelocation.SiteLocator.raster_overlayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the weighted average of the three rasters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rasters</strong> (<em>list</em>) – List of the three input rasters.</p></li>
+<li><p><strong>weights</strong> (<em>list</em>) – List of the three weights corresponding to rasters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Final, averaged, rounded raster (numpy ndarray).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.raster_reader">
+<span class="sig-name descname"><span class="pre">raster_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raster_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#sitelocation.SiteLocator.raster_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the three input rasters (geology, population, transport) into a list of numpy arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>raster_list</strong> (<em>list</em>) – List of filepaths of the rasters to read.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of rasters (numpy ndarrays).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sitelocation.SiteLocator.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the currently displayed raster file to a .csv file to the location specified by the user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.shower">
+<span class="sig-name descname"><span class="pre">shower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raster</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sitelocation.SiteLocator.shower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the map image on an axes subplot with the appropriate colour scheme.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>raster</strong> (<em>list</em>) – The final, weighted raster.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.turn_blue">
+<span class="sig-name descname"><span class="pre">turn_blue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sitelocation.SiteLocator.turn_blue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the plotting colour of the map reacting to a checkbox. If the map is already displayed, automatically changes the color.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sitelocation.SiteLocator.weight_reader">
+<span class="sig-name descname"><span class="pre">weight_reader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#sitelocation.SiteLocator.weight_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the weight variables to each map and returns them in a list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of weights corresponding to rasters.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sitelocation.main">
+<span class="sig-prename descclassname"><span class="pre">sitelocation.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sitelocation.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function, initialises a new SiteLocator object, starts mainloop.</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Industrial Site Locator</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">sitelocation module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Industrial Site Locator’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Sándor István Magyari.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/sitelocation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
