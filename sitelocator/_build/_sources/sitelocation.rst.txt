@@ -1,0 +1,7 @@
+sitelocation module
+===================
+
+.. automodule:: sitelocation
+   :members:
+   :undoc-members:
+   :show-inheritance:
